@@ -1,0 +1,166 @@
+.background-container {
+    position: relative;
+    width: 100%;
+    height: 460px;
+    background-image: url('../images/bg-home.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+}
+.overlay {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.47); /* 设置透明度的黑色 */
+}
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 185px;
+}
+.title{
+    font-size: 58px;
+    font-weight: 300
+}
+._btn{
+    border-radius: 0;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    background-color: #f6f6f6;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ababab;
+}
+.breadborad_text{
+    font-size: 19px;
+    margin-top: 30px;
+    color: #d9d6d6;
+    text-decoration: none;
+}
+
+
+
+.accordion{
+    display: flex;justify-content: space-around;
+    padding-bottom:30px;
+    padding-top: 70px;
+}
+.btn_color{
+    color: black;
+    border-bottom:2px solid #0d6efd;
+}
+.card_padding{
+    padding: 50px;
+    border-radius: 0;
+}
+
+@media (max-width: 2200px) {
+    .title{
+        font-size: 56px;
+    }
+}
+@media (max-width: 1800px) {
+    .content {
+        position: relative;
+        z-index: 1;
+        padding: 160px;
+    }
+    .background-container {
+        height: 410px;
+    }
+    .title{
+        font-size: 53px;
+    }
+}
+@media (max-width: 1500px) {
+    .content {
+        position: relative;
+        z-index: 1;
+        padding: 140px;
+    }
+    .background-container {
+        height: 370px;
+    }
+    .title{
+        font-size: 48px;
+    }
+}
+@media (max-width: 1200px) {
+    .content {
+        position: relative;
+        z-index: 1;
+        padding: 117px;
+    }
+    .background-container {
+        height: 325px;
+    }
+    .title{
+        font-size: 42px;
+    }
+}
+@media (max-width: 991px) {
+    .card_padding{
+        padding: 35px;
+        border-radius: 0;
+    }
+    .content {
+        position: relative;
+        z-index: 1;
+        padding: 95px;
+    }
+    .background-container {
+        height: 280px;
+    }
+    .title{
+        font-size: 38px;
+    }
+}
+@media (max-width: 767px) {
+    .content {
+        position: relative;
+        z-index: 1;
+        padding: 85px;
+    }
+    .background-container {
+        height: 260px;
+    }
+    .title{
+        font-size: 35px;
+    }
+    .breadborad_text{
+        font-size: 18px;
+    }
+}
+@media (max-width: 600px) {
+    .card_padding{
+        padding: 25px;
+        border-radius: 0;
+    }
+    .content {
+        position: relative;
+        z-index: 1;
+        padding: 80px;
+    }
+    .background-container {
+        height: 245px;
+    }
+    .title{
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card_padding{
+        padding: 5px;
+        border-radius: 0;
+    }
+
+}

@@ -1,0 +1,172 @@
+<%- include('./header.ejs') %>
+<style>
+    .card_padding{
+        margin: 50px;
+        padding: 50px
+    }
+    .margin{
+        margin-bottom: 40px;
+    }
+    .btn_{
+        width: 100%;
+    }
+    @media (max-width: 991px) {
+        .card_padding{
+            margin: 0px;
+            margin-top: 50px;
+            padding: 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .btn_{
+            margin-top:10px;
+            margin-bottom:10px;
+            width: 100%;
+        }
+        .card_padding{
+            padding: 42px
+        }
+    }
+    @media (max-width: 480px) {
+        .card_padding{
+            padding: 32px
+        }
+    }
+</style>
+<main>
+    <div class="container-sm">
+        <div class="card card_padding" >
+            <div class="row margin">
+                <label class="col-md-2 col-form-label" style="font-weight: 500">上傳地點</label>
+                <div class="col-md-10" >
+                    <div style="display: flex">
+
+                        <input id="name" style="margin-right: 5px" type="text" class=" form-control"  placeholder="輸入地點名稱">
+                        <input id="city" style="margin-left: 5px" type="text" class=" form-control" placeholder="輸入所在城市">
+
+                        <input id="area" style="margin-left: 5px" type="text" class=" form-control" placeholder="輸入所在區域">
+                    </div>
+                    <div style="display: flex">
+                        <div class=" col-md-10" style="padding-right: 5px">
+                            <input id="address"  style="margin-top: 10px" type="text" class=" form-control"  placeholder="輸入詳細地址">
+                        </div>
+                        <div class="col-md-2" style="padding-left: 5px">
+                            <button style="margin-top: 10px" class="btn btn-primary btn_ " onclick="upload()" >上傳</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <p class="col-md-2 " style="font-weight: 500">已有地點</p>
+                <div class="col-md-10">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">編號</th>
+                            <th scope="col">名稱</th>
+                            <th scope="col">城市</th>
+                            <th scope="col">區域</th>
+                            <th scope="col">刪除</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../components/footer.ejs') %>
+<script>
+    axios.post('/admin/place/',{
+        'fetch':1,
+    }).then(res=>{
+        if(res.data.errno === 0){
+            res.data.places.forEach((item)=>{
+
+                $("#list").append($(`
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>${item.name}</td>
+                        <td>${item.city}</td>
+                        <td>${item.area}</td>
+                        <td >
+                            <a href="#" onclick="delete_(${item.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                x
+                            </a>
+                        </td>
+                    </tr>
+                `))
+            })
+        }
+    })
+
+    function upload(){
+        axios.post('/admin/place/',{
+            'fetch':0,
+            'address':$('#address').val(),
+            'name':$('#name').val(),
+            'area':$('#area').val(),
+            'city':$('#city').val()
+        }).then(res=>{
+
+            if(res.data.errno === 0){
+                swal({
+                    'title':'新增成功',
+                    'icon':'success',
+                    'button':'確定',
+                    'text':' '
+                })
+            }
+            $("#list").append($(`
+                <tr>
+                    <th scope="row">${res.data.place.id}</th>
+                    <td>${res.data.place.name}</td>
+                    <td>${res.data.place.city}</td>
+                    <td>${res.data.place.area}</td>
+                    <td >
+                        <a href="#" onclick="delete_(${res.data.place.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                            x
+                        </a>
+                    </td>
+                </tr>
+            `))
+        })
+    }
+
+
+    function delete_(id){
+        axios.patch ('/admin/place/',{
+            id:id
+        }).then(res=>{
+            swal({
+                'title':'刪除成功',
+                'icon':'success',
+                'button':'確定',
+                'text':' '
+            })
+            $('#list').empty()
+            res.data.places.forEach(item=>{
+                $('#list').append($(`
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>${item.name}</td>
+                        <td>${item.city}</td>
+                        <td>${item.area}</td>
+                        <td >
+                            <a href="#" onclick="delete_(${item.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                x
+                            </a>
+                        </td>
+                    </tr>
+                `))
+            })
+        })
+    }
+</script>

@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="icon" href="/images/icon.jpg" type="image/x.icon" >
+    <link href="/css/register.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
+
+    <title>使用者登入</title>
+</head>
+<body>
+<div class="background-container">
+    <div class="overlay"></div>
+    <div class="content" >
+        <h1 class="title">使用者註冊頁面</h1>
+        <a class="breadborad_text" href="/"> 首頁 </a>
+        <span class="breadborad_text"> / </span>
+        <a href="/login" class="breadborad_text"> 使用者登入 </a>
+    </div>
+</div>
+<div class="container">
+
+
+    <div  class="accordion" >
+        <a id="step1" type="button" class="_btn btn_color"  onclick="step1()">
+            使用者優惠
+        </a>
+        <a  id="step2" type="button" class="_btn " onclick="step2()">
+            使用者基本資訊
+        </a>
+        <a  id="step3"  type="button" class="_btn " onclick="step3()">
+            檢查送出
+        </a>
+    </div>
+    <div >
+
+        <div id="One" >
+            <div >
+                <div class="border">
+
+
+                    <h5>短期租車優惠</h5>
+                    <p>
+                        <li>平、假日折扣</li>
+                        <li>享定價平日 7折 / 假日 8折 優惠</li>
+                    </p>
+                </div>
+
+                <div class="border">
+                    <h5>專車接送服務優惠</h5>
+                    <p>
+                        <li>平、假日折扣</li>
+                        <li>單趟、包車服務享9折起優惠。</li>
+
+                        <li>春節期間、連續或特殊假期不適用(春節、連續或特殊假期定義請依官網公告為主)。</li>
+                        <li>加價費用(例如：舉牌、安全座椅、夜間加成…等)不適用折扣優惠。</li>
+                    </p>
+                </div>
+
+                <div class="border">
+                    <h5>承租3天~10天會員優惠</h5>
+                    <p>
+                        <li>限會員使用網路承租3~10天</li>
+                        <li>承租天數3~5天，得享不分平假日7折優惠</li>
+                        <li>承租天數6~10天，得享不分平假日6折優惠</li>
+                        <li>使用長天數專案者，不可再使用e-bonus抵扣，但當次消費可累積e-bonus</li>
+                        <li>註：其他長天期承租需求，請洽各短租站另有優惠</li>
+                    </p>
+                </div>
+
+                <div class="border">
+                    <h5>商務專案會員優惠</h5>
+                    <p>
+                        <li>本專案使用享平日6折，網路會員/臨櫃均適用。
+                        （平日定義：週一~週四、非國定假日及國定假日前一日）</li>
+                        <li>網路會員使用得累積e-bonus，但不得使用e-bonus扣抵消費。
+                        （網路會員若有積點可使用，請自行試算並選擇使用一般網路專案或使用本專案較有利）</li>
+                        <li>高鐵站出車者，每次承租使用時數限12小時內；一般站出車者，每次承租使用時數限10小時內。</li>
+                        <li>限當天據點營業時間內租還。</li>
+                        <li>承租時數不得超過10小時。</li>
+                        <li>農曆春節期間不適用。若有假日需求，請選擇「一般租車」預約。</li>
+                        <li>本專案無法提供甲租乙還服務。</li>
+                        <li>使用本專案不得與其他優惠專案合併使用（含租車禮券）。</li>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div id="Two" ></div>
+        <div id="Three" ></div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script>
+    let name ="";
+    let identity ="";
+    let email ="";
+    let country ="";
+    let birthday ="";
+    let phone ="";
+    let password ="";
+    let password_confirm="";
+
+    let three_to1 = false
+    let one_to3 = false
+
+    function filterData(str){
+        if( $(`#${str}`).val() === undefined  || $(`#${str}`).val() === "" || $(`#${str}`).val() === null){
+            return  ""
+        }else{
+            return  $(`#${str}`).val()
+        }
+    }
+
+    function step1(){
+        one_to3 = true
+        if(!three_to1){
+            name = filterData("name")
+            identity = filterData('identity')
+            email = filterData('email')
+            country = filterData('country')
+            birthday = filterData('birthday')
+            phone = filterData('phone')
+            password = filterData('password')
+            password_confirm = filterData('password_confirm')
+            three_to1 = false
+        }
+        $('#One').empty()
+        $('#Two').empty()
+        $('#Three').empty()
+        $('#One').append($(`
+            <div >
+                <div class="border">
+                    <h5>短期租車優惠</h5>
+                    <p>
+                        <li>平、假日折扣</li>
+                        <li>享定價平日 7折 / 假日 8折 優惠</li>
+                    </p>
+                </div>
+                <div class="border">
+                    <h5>專車接送服務優惠</h5>
+                    <p>
+                        <li>平、假日折扣</li>
+                        <li>單趟、包車服務享9折起優惠。</li>
+                        <li>春節期間、連續或特殊假期不適用(春節、連續或特殊假期定義請依官網公告為主)。</li>
+                        <li>加價費用(例如：舉牌、安全座椅、夜間加成…等)不適用折扣優惠。</li>
+                    </p>
+                </div>
+                <div class="border">
+                    <h5>承租3天~10天會員優惠</h5>
+                    <p>
+                        <li>限會員使用網路承租3~10天</li>
+                        <li>承租天數3~5天，得享不分平假日7折優惠</li>
+                        <li>承租天數6~10天，得享不分平假日6折優惠</li>
+                        <li>使用長天數專案者，不可再使用e-bonus抵扣，但當次消費可累積e-bonus</li>
+                        <li>註：其他長天期承租需求，請洽各短租站另有優惠</li>
+                    </p>
+                </div>
+                <div class="border">
+                    <h5>商務專案會員優惠</h5>
+                    <p>
+                        <li>本專案使用享平日6折，網路會員/臨櫃均適用。
+                        （平日定義：週一~週四、非國定假日及國定假日前一日）</li>
+                        <li>網路會員使用得累積e-bonus，但不得使用e-bonus扣抵消費。
+                        （網路會員若有積點可使用，請自行試算並選擇使用一般網路專案或使用本專案較有利）</li>
+                        <li>高鐵站出車者，每次承租使用時數限12小時內；一般站出車者，每次承租使用時數限10小時內。</li>
+                        <li>限當天據點營業時間內租還。</li>
+                        <li>承租時數不得超過10小時。</li>
+                        <li>農曆春節期間不適用。若有假日需求，請選擇「一般租車」預約。</li>
+                        <li>本專案無法提供甲租乙還服務。</li>
+                        <li>使用本專案不得與其他優惠專案合併使用（含租車禮券）。</li>
+                    </p>
+                </div>
+        `))
+        $('#step1').addClass('btn_color');
+        $('#step2').removeClass('btn_color');
+        $('#step3').removeClass('btn_color');
+    }
+
+    function step2(){
+        three_to1 = false
+        one_to3 = false
+        $('#One').empty()
+        $('#Two').empty()
+        $('#Three').empty()
+        $('#Two').append($(`
+            <div class="row">
+                <div class="col-md-6" >
+                    <div class="mb-3">
+                        <label  class="form-label">姓名</label>
+                        <input id="name" type="text" class="form-control  form_height"  aria-describedby="emailHelp" placeholder="   徐浩哲" value="${name}">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">電子郵件信箱</label>
+                        <input id="email" type="email" class="form-control  form_height"  aria-describedby="emailHelp" placeholder="   Example@gmail.com" value="${email}">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">密碼</label>
+                        <input id="password" type="password" class="form-control form_height" placeholder="   Password" value="${password}">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">密碼確認</label>
+                        <input id="password_confirm" type="password" class="form-control form_height" placeholder="   Password Confrim" value="${password_confirm}">
+                    </div>
+                </div>
+                <div class="col-md-6" >
+                    <div class="mb-3">
+                        <label  class="form-label">國籍</label>
+                        <input id="country" type="text" class="form-control  form_height"  aria-describedby="emailHelp" placeholder="   Taiwan" value="${country}">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">生日</label>
+                        <input id="birthday" type="text" class="form-control form_height" placeholder="   2000/05/30" value="${birthday}">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">聯絡電話</label>
+                        <input id="phone" type="text" class="form-control form_height" placeholder="   0912345678" value="${phone}">
+                    </div>
+                    <div class="mb-3">
+                        <label  class="form-label">身分證字號</label>
+                        <input id="identity" type="text" class="form-control form_height" placeholder="   A123456789" value="${identity}">
+                    </div>
+                </div>
+                <hr style="margin-top: 30px;margin-bottom: 30px">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1">
+                    <label class="form-check-label" for="flexCheckDefault">
+                         我已持有駕照或國際駕照
+                    </label>
+                </div>
+                <div class="form-check" style="margin-bottom: 50px">
+                    <input class="form-check-input" type="checkbox" value="2" >
+                    <label class="form-check-label" for="flexCheckChecked">
+                        我已閱讀並同意租車相關規定
+                    </label>
+                </div>
+            </div>
+        `))
+        $('#step1').removeClass('btn_color');
+        $('#step2').addClass('btn_color');
+        $('#step3').removeClass('btn_color');
+    }
+
+    function step3(){
+        if(!one_to3){
+            name = filterData("name")
+            identity = filterData('identity')
+            email = filterData('email')
+            country = filterData('country')
+            birthday = filterData('birthday')
+            phone = filterData('phone')
+            password = filterData('password')
+            password_confirm = filterData('password_confirm')
+            one_to3 = false
+        }
+        three_to1 = true
+        $('#One').empty()
+        $('#Two').empty()
+        $('#Three').empty()
+        $('#Three').append($(`
+            <div >
+                <div class="border">
+                    <h5 style="margin-bottom: 25px">確認您的個人資訊</h5>
+                    <p>
+                        <strong>姓名：</strong>${name}
+                    </p>
+                    <p>
+                        <strong>身分證字號：</strong>${identity}
+                    </p>
+                    <p>
+                        <strong>電子郵件信箱：</strong>${email}
+                    </p>
+                    <p>
+                        <strong>國籍：</strong>${country}
+                    </p>
+                    <p>
+                        <strong>生日：</strong>${birthday}
+                    </p>
+                    <p>
+                        <strong>聯絡電話：</strong>${phone}
+                    </p>
+                    <a style="border-radius: 0" onclick="submit_()" class="btn btn-outline-dark login_btn">確認送出</a>
+                </div>
+            </div
+        `))
+        $('#step1').removeClass('btn_color');
+        $('#step2').removeClass('btn_color');
+        $('#step3').addClass('btn_color');
+    }
+
+    function notEmpty(val){
+        if(val === "" || val === undefined || val === null){
+            return false
+        }else{
+            return true
+        }
+    }
+
+    function submit_(){
+        if(notEmpty(name) && notEmpty(identity) && notEmpty(email) && notEmpty(country) && notEmpty(birthday) && notEmpty(phone) &&notEmpty( password)){
+            axios.post('/register/',{
+                "name" : name,
+                "identity" : identity,
+                "email" : email,
+                "country" : country,
+                "birthday" : birthday,
+                "phone" : phone,
+                "password" : password
+            }).then(res=>{
+                if(res.data.errno === 0){
+                    swal({
+                        'title':'註冊成功',
+                        'text':'請稍候，正在跳轉頁面',
+                        'icon':'success',
+                        'timer':1500
+                    })
+                    setTimeout(()=>{
+                        window.location.href='/'
+                    },1500)
+                }else{
+                    swal({
+                        'title':'成功失敗',
+                        'text':'電子郵件信箱 或 身分證已經被註冊過了',
+                        'icon':'warning',
+                        'timer':1500
+                    })
+                }
+            })
+        }else{
+            swal({
+                'title':'註冊失敗',
+                'text':'所有資訊都是必填',
+                'icon':'warning',
+                'timer':1500
+            })
+        }
+
+    }
+</script>
+</body>
+</html>

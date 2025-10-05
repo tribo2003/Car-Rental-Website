@@ -1,0 +1,30 @@
+<%- include('./header.ejs') %>
+<main>
+    <div class="container" style="padding: 75px">
+        <div class="card card_padding" style="padding: 75px">
+            <h5>帳單</h5>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">月份</th>
+                    <th scope="col">總金額</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% for (let a of arr){%>
+                        <tr>
+                            <td>
+                                <%= a['month']%> 月
+                            </td>
+                            <td>
+                                <%= a['price']%> 元
+                            </td>
+                        </tr>
+                    <%} %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<%- include('../components/footer.ejs') %>

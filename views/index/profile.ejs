@@ -1,0 +1,172 @@
+<%- include('../components/header.ejs') %>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12" style="box-shadow: 0px 0px 5px #e3e3e3; padding: 50px;border-radius: 10px;margin-top: 60px">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <h5 style="color: #777777;"> 歡迎回來!</h5>
+
+                    <h4>
+                        <span style="color: #0d6efd">
+                            <span style="color: #777777;font-size: smaller;font-weight: normal">
+                                使用者：
+                            </span>
+                            <%= user.name %>
+                        </span>
+                    </h4>
+                </div>
+                <div class="col-md-9">
+                    <h5 style="color: #777777;">使用者資訊</h5>
+
+
+                    <p style="color: #777777 ; margin-top: 25px">
+                        電子郵件信箱 : <%= user.email %>
+                    </p>
+                    <p style="color: #777777 ; margin-top: 25px">
+                        電話號碼 : <%= user.phone %>
+                    </p>
+                    <p style="color: #777777 ; margin-top: 25px">
+                        身分證字號 : <%= user.identity %>
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+        <div style="margin-top: 50px">
+            <h4 style="color: #666666">日租車訂單</h4>
+            <table class="table" style="color: #666666">
+                <thead>
+                <tr>
+                    <th scope="col">汽車名稱</th>
+                    <th scope="col">車牌號碼</th>
+                    <th scope="col">借車日期</th>
+                    <th scope="col">還車日期</th>
+                    <th scope="col">價格</th>
+                    <th scope="col">類型</th>
+                    <th scope="col">狀態</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for(let daily of dailyRental) {%>
+                    <% if(daily.classify == 'Month'){ %>
+                    <tr>
+                        <td><%=daily.vehicle.name%></td>
+                        <td><%=daily.vehicle.license_plate%></td>
+                        <td><%=daily.rental_time_ %></td>
+                        <td>訂閱車時限為一個月</td>
+                        <td><%=daily.price%></td>
+                        <td><%=daily.classify%></td>
+                        <td><%=daily.status%></td>
+                    </tr>
+                    <% }else{%>
+                        <tr>
+                            <td><%=daily.vehicle.name%></td>
+                            <td><%=daily.vehicle.license_plate%></td>
+                            <td><%=daily.rental_time_ %></td>
+                            <td><%=daily.return_time_ %></td>
+                            <td><%=daily.price%></td>
+                            <td><%=daily.classify%></td>
+                            <td><%=daily.status%></td>
+                        </tr>
+                    <% }%>
+
+                <% }%>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 50px">
+            <h4 style="color: #666666">歷史訂單</h4>
+            <table class="table" style="color: #666666">
+                <thead>
+                <tr>
+                    <th scope="col">汽車名稱</th>
+                    <th scope="col">車牌號碼</th>
+                    <th scope="col">借車日期</th>
+                    <th scope="col">價格</th>
+                    <th scope="col">類型</th>
+                    <th scope="col">狀態</th>
+                    <th scope="col">回饋</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% history.forEach((item)=>{%>
+                    <tr>
+                        <td><%=item.vehicle.name%></td>
+                        <td><%=item.vehicle.license_plate%></td>
+                        <td><%=item.rental_time_ %></td>
+                        <td><%=item.price%></td>
+                        <td><%=item.classify%></td>
+                        <td><%=item.status%></td>
+                        <td>
+                            <% if(item.isFeedback){ %>
+                                <span>您已經評價完成</span>
+                            <% }else {%>
+                                <a style="color: #0d6efd" onclick="orderId(<%=item.id%>)"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">給予評價</a>
+                            <%}%>
+                        </td>
+                    </tr>
+                    <% }) %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="padding: 40px" class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasBottomLabel">為訂單評分</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body small" >
+
+        <div class="mb-3">
+            <input id="feedback" type="text" class="form-control" id="exampleInputPassword1" placeholder="留下您寶貴的評價">
+        </div>
+
+        <button onclick="submit_feedback()" type="submit" class="btn btn-primary">確定送出</button>
+    </div>
+</div>
+<%- include('../components/footer.ejs') %>
+<script>
+
+    let id ;
+    function orderId(_id){
+        id = Number(_id)
+
+    }
+
+    function submit_feedback(){
+        if($('#feedback').val().trim() === ''){
+            swal({
+                'icon':'warning',
+                'text':'此表格不可為空',
+                'title':'請輸入訊息',
+                'timer':1500
+            })
+        }else{
+            axios.post('/feedback',{
+                'feedback': $('#feedback').val(),
+                'id':id
+            }).then(res=>{
+                if(res.data.errno === 0){
+                    swal({
+                        'title':'已成功送出',
+                        'text':'感謝您的回饋',
+                        'icon':'success',
+                        'timer':1500
+                    })
+                }else{
+                    swal({
+                        'icon':'warning',
+                        'text':'請稍後再試',
+                        'title':'系統出錯',
+                        'timer':1500
+                    })
+                }
+
+            })
+        }
+    }
+</script>

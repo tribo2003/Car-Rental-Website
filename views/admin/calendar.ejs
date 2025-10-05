@@ -1,0 +1,82 @@
+
+<%- include('./header.ejs') %>
+<style>
+    .holidayEvent {
+        background-color: #e5be20;
+        border-color: #e5be20;
+    }
+</style>
+<body>
+    <div class="container" style="padding: 75px">
+
+        <div id="calendar" style="padding: 75px">
+
+        </div>
+    </div>
+</body>
+<%- include('../components/footer.ejs') %>
+<script>
+
+    let url = window.location.href
+    axios.post(url).then(res=>{
+        const daily = res.data.daily
+        const Month = res.data.Month
+        console.log(daily )
+        console.log(Month )
+
+        const events = []
+        if(daily!==[]){
+            daily.forEach((item)=>{
+                events.push({
+                    title: "已出租",
+                    start: item.start,
+                    end: item.end,
+                    textColor: "#000",
+                    className: "holidayEvent"
+                })
+            })
+        }
+        if(Month!==[]){
+            Month.forEach((item)=>{
+                const end = new Date(item)
+                const currentMonth = end.getMonth();
+                end .setMonth(currentMonth + 1);
+                if (end.getMonth() !== (currentMonth + 1) % 12) {
+                    end.setDate(0); // 设置为上个月的最后一天
+                }
+
+                events.push({
+                    title: "訂閱中",
+                    start: item,
+                    end: end.toISOString(),
+                    textColor: "#000",
+                    className: "holidayEvent"
+                })
+            })
+        }
+
+        console.log(events)
+
+        const calendarEl = document.getElementById("calendar")
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: "dayGridMonth",
+            headerToolbar: {
+                left: "prev,next today",
+                center: "title",
+                right: "dayGridMonth,timeGridWeek,timeGridDay",
+            },
+            buttonText: {
+                today: "Today",
+                month: "Month",
+                week: "Week",
+                day: "Day",
+            },
+            events: events
+        })
+        calendar.render()
+    })
+
+</script>
+<!-- fullcalendar origin code-->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+

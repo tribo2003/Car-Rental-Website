@@ -1,0 +1,151 @@
+<%- include('./header.ejs') %>
+<main>
+    <div class="container-sm" style="padding: 75px">
+        <div class="card" style="padding: 75px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">詳細資訊</th>
+                        <th scope="col">內容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>姓名 </th>
+                    <td><%=order.User.name%></td>
+                </tr>
+                <tr>
+                    <th >email </th>
+                    <td><%=order.User.email%></td>
+                </tr>
+                <tr>
+                    <th >身分證 </th>
+                    <td><%=order.User.identity%></td>
+                </tr>
+                <tr>
+                    <th >生日 </th>
+                    <td><%=order.User.birthday%></td>
+                </tr>
+                <tr>
+                    <th >電話</th>
+                    <td><%=order.User.phone%></td>
+                </tr>
+                <tr>
+                    <th >國籍 </th>
+                    <td><%=order.User.country%></td>
+                </tr>
+                <tr>
+                    <th >車輛名稱 </th>
+                    <td><%=order.Vehicle.name%></td>
+                </tr>
+                <tr>
+                    <th >車排號碼 </th>
+                    <td><%=order.Vehicle.license_plate%></td>
+                </tr>
+                <tr>
+                    <th >借車時間 </th>
+                    <td><%=order.rental_time%></td>
+                </tr>
+
+                <% if(order.classify === 'Month'){%>
+                <tr>
+                    <th >類型</th>
+                    <td>月訂閱車</td>
+                </tr>
+                <% }else{%>
+                    <tr>
+                        <th >類型 </th>
+                        <td>日租車</td>
+                    </tr>
+                    <tr>
+                        <th >還車時間 </th>
+                        <td><%=order.return_time%></td>
+                    </tr>
+                <%} %>
+                <tr>
+                    <th >費用 </th>
+                    <td><%=order.price%></td>
+                </tr>
+                <tr>
+                    <th >付費方式 </th>
+                    <td><%=order.payment_method%></td>
+                </tr>
+                <tr>
+                    <th> 訂單回饋 </th>
+                    <td><%=order.feedback%></td>
+                </tr>
+                <tr>
+                    <th >是否還車 </th>
+                    <% if(order.isReturn){%>
+                    <td>
+                        <input onclick="notReturn('<%=order.id%>')" class="form-check-input" type="checkbox" value="" checked>
+                        <label class="form-check-label" >
+                            is Return
+                        </label>
+                    </td>
+                    <%}else{%>
+                    <td>
+                        <input onclick="isReturn('<%=order.id%>')" class="form-check-input" type="checkbox" value="" >
+                        <label class="form-check-label" >
+                            is Return
+                        </label>
+                    </td>
+                    <%}%>
+                </tr>
+                <tr>
+                    <th >是否付費</th>
+                    <% if(order.isPay){%>
+                        <td>
+                            <input onclick="notPay('<%=order.id%>')" class="form-check-input" type="checkbox" value="" checked>
+                            <label class="form-check-label" >
+                                is Pay
+                            </label>
+                        </td>
+                    <%}else{%>
+                        <td>
+                            <input onclick="isPay('<%=order.id%>')" class="form-check-input" type="checkbox" value="" >
+                            <label class="form-check-label" >
+                                is Pay
+                            </label>
+                        </td>
+                    <%}%>
+                </tr>
+                <tr>
+                    <th >刪除訂單</th>
+                    <td  style="color: red">確認刪除</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<%- include('../components/footer.ejs') %>
+<script>
+    function isReturn(id){
+        axios.post('/admin/',{
+            type:'isReturn',
+            id:Number(id)
+        })
+    }
+    function notReturn(id){
+        axios.post('/admin/',{
+            type:'notReturn',
+            id:Number(id)
+        })
+    }
+
+    function isPay(id){
+        axios.post('/admin/',{
+            type:'isPay',
+            id:Number(id)
+        })
+    }
+
+    function notPay(id){
+        axios.post('/admin/',{
+            type:'notPay',
+            id:Number(id)
+        })
+    }
+</script>

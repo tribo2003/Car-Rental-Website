@@ -1,0 +1,357 @@
+<%- include('../components/header.ejs') %>
+<link rel="stylesheet" href="/css/index.css" >
+
+<style>
+    .img{
+        width: 100%;
+        border-radius: 5px;
+    }
+    .img:hover{
+        transform: scale(1.05); /* 放大图片 */
+        transition: transform 0.3s ease;
+    }
+    .single{
+        padding: 40px
+    }
+    .switch{
+        text-decoration: none
+    }
+
+    @media (max-width: 1600px) {
+        .single{
+            padding: 35px
+        }
+    }
+    @media (max-width: 1400px) {
+        .single{
+            padding: 30px
+        }
+    }
+    @media (max-width: 1200px) {
+        .single{
+            padding: 25px
+        }
+    }
+
+</style>
+<div class="container">
+    <div class="row" style="margin-top: 50px">
+        <div class="col-lg-6 single" >
+            <img class="img" src="<%= vehicle.image %>">
+        </div>
+        <div class="col-lg-6 single" >
+            <h2 style="color: #101737"><%= vehicle.name %></h2>
+            <p style="margin-bottom: 2px">
+                <span id="switch">
+                    <span style="color: #0e6efd;font-size: larger;font-weight: 800"><%= vehicle.price %>$</span>
+                    <span style="color: #ababab">/ Day</span>
+                    <a style="background: #0d6efd;color: white;padding: 2px 7px 2px 7px;border-radius: 5px;font-size: xx-small;" class="switch"  onclick="switch_()">查看訂閱價格</a>
+                </span>
+            </p>
+
+            <p style="margin-top: 25px;color:#777777">
+                <%= vehicle.introduction %>
+            </p>
+            <p style="color: #ababab ;margin-top: 30px">
+                <svg style="height: 18px;width: 18px;margin-bottom: 3px" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512">
+                    <path d="M20.9,4.291A5.011,5.011,0,0,0,16.2,1H7.8A5.011,5.011,0,0,0,3.1,4.291L.4,11.718A6.664,6.664,0,0,0,0,14v1a4.979,4.979,0,0,0,2,3.978c0,.008,0,.014,0,.022v2a3,3,0,0,0,6,0V20h8v1a3,3,0,0,0,6,0V19c0-.008,0-.014,0-.022A4.979,4.979,0,0,0,24,15V14a6.654,6.654,0,0,0-.4-2.281ZM4.982,4.975A3.009,3.009,0,0,1,7.8,3h8.4a3.009,3.009,0,0,1,2.82,1.975L21.208,11H2.791ZM6,21a1,1,0,0,1-2,0V19.9A5,5,0,0,0,5,20H6Zm14,0a1,1,0,0,1-2,0V20h1a5,5,0,0,0,1-.1Zm2-6a3,3,0,0,1-3,3H5a3,3,0,0,1-3-3V14a4.659,4.659,0,0,1,.121-1H4v1a1,1,0,0,0,2,0V13H18v1a1,1,0,0,0,2,0V13h1.879A4.652,4.652,0,0,1,22,14Z" fill="#ababab"/>
+                </svg>
+                <span style="margin-right: 15px"><%= vehicle.age %> 年</span>
+                <svg style="height: 18px;width: 18px;margin-bottom: 3px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="512" height="512">
+                    <g id="_01_align_center" data-name="01 align center">
+                        <path d="M10.931,2.75a3.728,3.728,0,0,0-7.195,0H0v2H3.736a3.728,3.728,0,0,0,7.195,0H24v-2ZM7.333,5.5a1.75,1.75,0,1,1,1.75-1.75A1.753,1.753,0,0,1,7.333,5.5Z" fill="#ababab"/>
+                        <path d="M16.667,8.25A3.745,3.745,0,0,0,13.07,11H0v2H13.07a3.727,3.727,0,0,0,7.194,0H24V11H20.264A3.745,3.745,0,0,0,16.667,8.25Zm0,5.5A1.75,1.75,0,1,1,18.417,12,1.752,1.752,0,0,1,16.667,13.75Z" fill="#ababab"/>
+                        <path d="M7.333,16.5a3.745,3.745,0,0,0-3.6,2.75H0v2H3.736a3.728,3.728,0,0,0,7.195,0H24v-2H10.931A3.745,3.745,0,0,0,7.333,16.5Zm0,5.5a1.75,1.75,0,1,1,1.75-1.75A1.753,1.753,0,0,1,7.333,22Z" fill="#ababab"/>
+                    </g>
+                </svg>
+                <span style="margin-right: 15px"><%= vehicle.type %></span>
+                <svg style="height: 18px;width: 18px;margin-bottom: 3px" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+                    <path d="m22.576,12.52L13.849,3.85c-.842-.835-2.046-1.243-3.221-1.09l-5.803.651L1.707.293C1.316-.098.684-.098.293.293S-.098,1.316.293,1.707l3.118,3.118-.696,6.088c-.091,1.142.323,2.258,1.136,3.062l8.713,8.645c.91.906,2.118,1.404,3.4,1.404h.02c1.29-.005,2.5-.513,3.408-1.431l3.21-3.242c1.87-1.89,1.859-4.955-.025-6.832Zm-1.396,5.426l-3.21,3.242c-.531.537-1.239.834-1.994.837h-.011c-.751,0-1.458-.292-1.992-.823L5.259,12.555c-.394-.39-.594-.93-.554-1.449l.512-4.474,1.857,1.857c-.044.164-.074.334-.074.512,0,1.105.895,2,2,2s2-.895,2-2-.895-2-2-2c-.178,0-.347.031-.512.074l-1.854-1.854,4.226-.474.021-.003c.568-.075,1.151.122,1.559.525l8.726,8.668c1.105,1.102,1.112,2.899.015,4.009Zm-3.974-5.151c-.391-.391-1.023-.391-1.414,0l-3,3c-.391.391-.391,1.023,0,1.414l2.5,2.5c.195.195.451.293.707.293s.512-.098.707-.293l3-3c.391-.391.391-1.023,0-1.414l-2.5-2.5Zm-1.207,4.793l-1.086-1.086,1.586-1.586,1.086,1.086-1.586,1.586Z" fill="#ababab"/>
+                </svg>
+                <span style="margin-right: 15px"><%= brand.name %></span>
+            </p>
+        </div>
+    </div>
+    <div  class="accordion" >
+        <a onclick="daily()" id="daily" type="button" class="_btn btn_color"  >
+            日租車
+        </a>
+        <a  onclick="contract()" id="contract" type="button" class="_btn " >
+            訂約車
+        </a>
+
+    </div>
+    <div  id="content" class="card card_padding" >
+        <div style="margin: 10px" id="place">
+            <p>選擇取還車地點</p>
+            <select style="height: 42px" class="form-select" id="rental_place">
+                <option >選擇取還車地點</option>
+
+            </select>
+        </div>
+        <div>
+            <div class="row" style="padding: 13px">
+                <div style="padding: 10px" class="col-sm-6">
+                    <p>選擇取車時間</p>
+                    <div style="display: flex">
+                        <input style="height: 42px;margin-right: 5px" class="form-control"  type="date" id="rental_date" name="date">
+
+                        <select style="height: 42px;margin-left: 5px" id="rental_time" class="form-select" aria-label="Default select example">
+                            <option >選擇時間</option>
+                            <option value="T08:00:00+08:00">8:00</option>
+                            <option value="T08:30:00+08:00">8:30</option>
+                            <option value="T09:00:00+08:00">9:00</option>
+                            <option value="T09:30:00+08:00">9:30</option>
+                            <option value="T10:00:00+08:00">10:00</option>
+                            <option value="T10:30:00+08:00">10:30</option>
+                            <option value="T11:00:00+08:00">11:00</option>
+                            <option value="T11:30:00+08:00">11:30</option>
+                            <option value="T12:00:00+08:00">12:00</option>
+                            <option value="T12:30:00+08:00">12:30</option>
+                            <option value="T13:00:00+08:00">13:00</option>
+                            <option value="T13:30:00+08:00">13:30</option>
+                            <option value="T14:00:00+08:00">14:00</option>
+                            <option value="T14:30:00+08:00">14:30</option>
+                            <option value="T15:00:00+08:00">15:00</option>
+                            <option value="T15:30:00+08:00">15:30</option>
+                            <option value="T16:00:00+08:00">16:00</option>
+                            <option value="T16:30:00+08:00">16:30</option>
+                            <option value="T17:00:00+08:00">17:00</option>
+                            <option value="T17:30:00+08:00">17:30</option>
+                            <option value="T18:00:00+08:00">18:00</option>
+                            <option value="T18:30:00+08:00">18:30</option>
+                            <option value="T19:00:00+08:00">19:00</option>
+                            <option value="T19:30:00+08:00">19:30</option>
+                            <option value="T20:00:00+08:00">20:00</option>
+                            <option value="T20:30:00+08:00">20:30</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="padding: 10px" class="col-sm-6">
+                    <p>選擇還車時間</p>
+                    <div style="display: flex">
+                        <input style="height: 42px;margin-right: 5px" class="form-control" type="date" id="return_date" name="date">
+                        <select style="height: 42px;margin-left: 5px" id="return_time" class="form-select" aria-label="Default select example">
+                            <option >選擇時間</option>
+                            <option value="T08:00:00+08:00">8:00</option>
+                            <option value="T08:30:00+08:00">8:30</option>
+                            <option value="T09:00:00+08:00">9:00</option>
+                            <option value="T09:30:00+08:00">9:30</option>
+                            <option value="T10:00:00+08:00">10:00</option>
+                            <option value="T10:30:00+08:00">10:30</option>
+                            <option value="T11:00:00+08:00">11:00</option>
+                            <option value="T11:30:00+08:00">11:30</option>
+                            <option value="T12:00:00+08:00">12:00</option>
+                            <option value="T12:30:00+08:00">12:30</option>
+                            <option value="T13:00:00+08:00">13:00</option>
+                            <option value="T13:30:00+08:00">13:30</option>
+                            <option value="T14:00:00+08:00">14:00</option>
+                            <option value="T14:30:00+08:00">14:30</option>
+                            <option value="T15:00:00+08:00">15:00</option>
+                            <option value="T15:30:00+08:00">15:30</option>
+                            <option value="T16:00:00+08:00">16:00</option>
+                            <option value="T16:30:00+08:00">16:30</option>
+                            <option value="T17:00:00+08:00">17:00</option>
+                            <option value="T17:30:00+08:00">17:30</option>
+                            <option value="T18:00:00+08:00">18:00</option>
+                            <option value="T18:30:00+08:00">18:30</option>
+                            <option value="T19:00:00+08:00">19:00</option>
+                            <option value="T19:30:00+08:00">19:30</option>
+                            <option value="T20:00:00+08:00">20:00</option>
+                            <option value="T20:30:00+08:00">20:30</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div style="width: 100%;margin: 10px" class="form-check">
+                <input class="form-check-input" type="checkbox" value="" onclick="A_rents_B_returns()">
+                <label class="form-check-label" for="flexCheckDefault">
+                    甲租乙還
+                </label>
+            </div>
+        </div>
+        <a style="width: 100%;height: 42px;margin: 10px" onclick="rent()"  class="btn btn-primary">我要租車</a>
+
+    </div>
+</div>
+<%- include('../components/footer.ejs') %>
+<script src="/js/vehicle.js"></script>
+<script>
+    let flag = false
+    function switch_(){
+        if(flag === false){
+            flag = true
+            $("#switch").empty()
+            $("#switch").append($(`
+                <span style="color: #0e6efd;font-size: larger;font-weight: 800"><%= vehicle.subscription %>$</span>
+                <span style="color: #ababab">/ Month</span>
+                <a style="background: #0d6efd;color: white;padding: 2px 7px 2px 7px;border-radius: 5px;font-size: xx-small;" class="switch"  onclick="switch_()">查看日租價格</a>
+            `))
+        }else{
+            flag = false
+            $("#switch").empty()
+            $("#switch").append($(`
+                <span style="color: #0e6efd;font-size: larger;font-weight: 800"><%= vehicle.price %>$</span>
+                <span style="color: #ababab">/ Day</span>
+                <a style="background: #0d6efd;color: white;padding: 2px 7px 2px 7px;border-radius: 5px;font-size: xx-small;" class="switch" onclick="switch_()">查看訂閱價格</a>
+            `))
+        }
+    }
+
+
+
+
+    // 將表單資料送到後端
+    function rent(){
+        if(  $('#rental_place').val() === '選擇取還車地點' || isEmpty($('#rental_date').val()) || isEmpty($('#rental_time').val()) || isEmpty($('#return_date').val()) || isEmpty($('#return_time').val()) ){
+            swal({
+                'title':'資料不完全',
+                'text':'請完整填寫所有資料',
+                'icon':'warning',
+                'buttons':false,
+                'timer':1500
+            })
+        }else{
+            const rental_date = std_time($('#rental_date').val(),$('#rental_time').val())
+            const return_date = std_time($('#return_date').val(),$('#return_time').val())
+            const now = new Date()
+            if(rental_date<now){
+                swal({
+                    'title':'資料錯誤',
+                    'text':'租借日期已經過期',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':2000
+                })
+            }else if(rental_date > return_date){
+                swal({
+                    'title':'資料錯誤',
+                    'text':'還車日期須在借車日期之後',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':2000
+                })
+            }else{
+
+                var date1 = new Date($('#rental_date').val()+$('#rental_time').val());
+                var date2 = new Date($('#return_date').val()+$('#return_time').val()); // 假設另一個日期是 2024-05-20
+                var timeDifference = date2 - date1;
+                var dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+                axios.post('/',{
+                    'single':true,
+                    'vehicle':'<%= id %>',
+                    'start':date1,
+                    'end':date2
+                }).then(res=>{
+                    if(res.data.errno === 0){
+                        swal({
+                            'title':'已傳送',
+                            'text':'正在跳轉至訂單頁面',
+                            'icon':'success',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                        const data = {
+                            'rental_place':$('#rental_place').val(),
+                            'return_place':$('#return_place').val(),
+                            'rental_date':$('#rental_date').val()+$('#rental_time').val(),
+                            'return_date':$('#return_date').val()+$('#return_time').val(),
+                            'vehicle':'<%= id %>',
+                            'dayDifference':Math.ceil(dayDifference),
+                            'classify':'day'
+                        }
+                        const queryString = new URLSearchParams(data).toString();
+                        setTimeout(()=>{
+                            window.location.href = `/order?${queryString}`;
+                        },1000)
+                    }else if(res.data.errno === 2){
+                        swal({
+                            'title':'提示',
+                            'text':'此日期已經有其他用戶租借了',
+                            'icon':'warning',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                    }else{
+                        swal({
+                            'title':'請先登入',
+                            'text':'登入後才能繼續以下動作',
+                            'icon':'warning',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                    }
+                })
+            }
+        }
+    }
+
+    function rent_sub(){
+        if(  $('#rental_place').val() === '選擇取還車地點' || isEmpty($('#rental_date').val()) || isEmpty($('#rental_time').val()) ){
+            swal({
+                'title':'資料不完全',
+                'text':'請完整填寫所有資料',
+                'icon':'warning',
+                'buttons':false,
+                'timer':1500
+            })
+        }else{
+            const rental_date = std_time($('#rental_date').val(),$('#rental_time').val())
+            const now = new Date()
+            if(rental_date<now){
+                swal({
+                    'title':'資料錯誤',
+                    'text':'租借日期已經過期',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':2000
+                })
+            }else{
+                axios.post('/',{
+                    'single':true,
+                    'vehicle':'<%= id %>',
+                    'start':rental_date
+                }).then(res=>{
+                    if(res.data.errno === 0){
+                        swal({
+                            'title':'已傳送',
+                            'text':'正在跳轉至訂單頁面',
+                            'icon':'success',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                        const data = {
+                            'rental_place':$('#rental_place').val(),
+                            'rental_date':$('#rental_date').val()+$('#rental_time').val(),
+                            'vehicle':"<%= id %>",
+                            'classify':'month'
+                        }
+                        const queryString = new URLSearchParams(data).toString();
+                        setTimeout(()=>{
+                            window.location.href = `/order?${queryString}`;
+                        },1000)
+                    }else if(res.data.errno === 1){
+                        swal({
+                            'title':'請先登入',
+                            'text':'登入後才能繼續以下動作',
+                            'icon':'warning',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                    }else if(res.data.errno === 2){
+                        swal({
+                            'title':'資料錯誤',
+                            'text':'租借日期已經過期',
+                            'icon':'warning',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                    }
+                })
+            }
+        }
+    }
+</script>
+

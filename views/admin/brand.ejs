@@ -1,0 +1,153 @@
+<%- include('./header.ejs') %>
+<style>
+    .card_padding{
+        margin: 50px;
+        padding: 50px
+    }
+    .margin{
+        margin-bottom: 40px;
+    }
+    .btn_{
+        width: 100%;
+    }
+    @media (max-width: 991px) {
+        .card_padding{
+            margin: 0px;
+            margin-top: 50px;
+            padding: 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .btn_{
+            margin-top:10px;
+            margin-bottom:10px;
+            width: 100%;
+        }
+        .card_padding{
+            padding: 42px
+        }
+    }
+    @media (max-width: 480px) {
+        .card_padding{
+            padding: 32px
+        }
+    }
+</style>
+<main>
+    <div class="container-sm">
+        <div class="card card_padding" >
+            <div class="row margin">
+                <label class="col-md-2 col-form-label" style="font-weight: 500">上傳品牌</label>
+                <div class="col-md-8" style="display: flex">
+                    <input id="name" style="margin-right: 5px" type="text" class=" form-control"  placeholder="輸入品牌名稱">
+                    <input id="en_name" style="margin-left: 5px" type="text" class=" form-control" placeholder="輸入英文名稱">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary btn_" onclick="upload()" >上傳</button>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <p class="col-md-2 " style="font-weight: 500">已有品牌</p>
+                <div class="col-md-10">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">編號</th>
+                                <th scope="col">品牌名稱</th>
+                                <th scope="col">英文名稱</th>
+                                <th scope="col">刪除</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../components/footer.ejs') %>
+<script>
+
+    axios.post('/admin/brand/',{
+        'fetch':1
+    }).then(res=>{
+        if(res.data.errno === 0){
+            res.data.brands.forEach(item=>{
+                $('#list').append($(`
+                    <tr>
+                        <th scope="row">${item.id}</th>
+                        <td>${item.name}</td>
+                        <td>${item.en_name}</td>
+                        <td >
+                            <a href="#" onclick="delete_(${item.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                x
+                            </a>
+                        </td>
+                    </tr>
+                `))
+            })
+        }
+    })
+
+    function upload(){
+        axios.post('/admin/brand/',{
+            'fetch':0,
+            'name':$("#name").val(),
+            'en_name':$('#en_name').val()
+        }).then(res=>{
+            if(res.data.errno === 0){
+                swal({
+                    'title':'新增成功',
+                    'text':' ',
+                    'button':'確認',
+                    'icon':'success'
+                })
+                $('#list').append($(`
+                    <tr>
+                        <th scope="row">${res.data.brand.id}</th>
+                        <td>${res.data.brand.name}</td>
+                        <td>${res.data.brand.en_name}</td>
+                        <td >
+                            <a href="#" onclick="delete_('${res.data.brand.id}')" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                x
+                            </a>
+                        </td>
+                    </tr>
+                `))
+
+            }
+        })
+    }
+
+
+    function delete_(id){
+        axios.patch('/admin/brand/',{
+            'id':id
+        }).then(res=>{
+            if(res.data.errno === 0){
+                swal({
+                    'title':'已刪除',
+                    'text':' ',
+                    'button':'確認',
+                    'icon':'success'
+                })
+                $("#list").empty()
+                res.data.brands.forEach(item=>{
+                    $('#list').append($(`
+                        <tr>
+                            <th scope="row">${item.id}</th>
+                            <td>${item.name}</td>
+                            <td>${item.en_name}</td>
+                            <td >
+                                <a href="#" onclick="delete_(${item.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                    x
+                                </a>
+                            </td>
+                        </tr>
+                    `))
+                })
+            }
+        })
+    }
+</script>

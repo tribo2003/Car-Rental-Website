@@ -1,0 +1,231 @@
+<%- include('./header.ejs') %>
+<style>
+    .card_padding{
+        margin: 50px;
+        padding: 50px
+    }
+    .margin{
+        margin-bottom: 40px;
+    }
+    .btn_{
+        width: 100%;
+    }
+
+    @media (max-width: 991px) {
+        .card_padding{
+            margin: 0px;
+            margin-top: 50px;
+            padding: 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .btn_{
+            margin-top:10px;
+            margin-bottom:10px;
+            width: 100%;
+        }
+        .card_padding{
+            padding: 42px
+        }
+    }
+    @media (max-width: 480px) {
+        .card_padding{
+            padding: 32px
+        }
+    }
+</style>
+<main>
+    <div class="container-sm">
+        <div class="card card_padding" >
+            <div class="row margin">
+                <label class="col-md-2 col-form-label" style="font-weight: 500;margin-top: 10px">上傳車輛</label>
+                <div class="col-md-10" >
+                    <div style="display: flex">
+                        <input id="name" style="margin-right: 5px;margin-top: 10px" type="text" class=" form-control"  placeholder="名稱/型號">
+                        <input id="age" style="margin-left: 5px;margin-top: 10px" type="number" class=" form-control" placeholder="輸入汽車年齡">
+                    </div>
+                    <div style="display: flex">
+                        <input id="price" style="margin-right: 5px;margin-top: 10px" type="text" class=" form-control"  placeholder="輸入一日租金">
+                        <input id="sub" style="margin-left: 5px;margin-top: 10px" type="number" class=" form-control" placeholder="輸入訂閱月費">
+                    </div>
+                    <div style="display: flex">
+                        <select id="type" style="margin-right: 5px;margin-top: 10px" class="form-select" >
+                            <option selected>汽車類型</option>
+                            <option value="1">經濟轎車</option>
+                            <option value="2">豪華轎車</option>
+                            <option value="3">休旅車</option>
+                            <option value="3">箱型車</option>
+                            <option value="3">機車</option>
+                            <option value="3">貨車/卡車</option>
+                        </select>
+
+                        <select id="brand" style="margin-right: 5px;margin-top: 10px" class="form-select" >
+                            <option selected>汽車品牌</option>
+
+
+                        </select>
+                        <input id="license_plate" style="margin-left: 0px;margin-top: 10px" type="text" class=" form-control" placeholder="輸入車排號碼">
+
+                    </div>
+                    <textarea id="introduction"  style="margin-top: 10px" class=" form-control"  placeholder="輸入車輛介紹"></textarea>
+
+                    <div style="display: flex">
+                        <div class=" col-md-10" style="padding-right: 5px">
+                            <input id="photo"  style="margin-top: 10px" type="file" class=" form-control"  >
+                        </div>
+                        <div class="col-md-2" style="padding-left: 5px">
+                            <button style="margin-top: 10px" class="btn btn-primary btn_ " onclick="upload_()" >上傳</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <p class="col-md-2 " style="font-weight: 500">已有車輛</p>
+                <div class="col-md-10">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">編號</th>
+                            <th scope="col">名稱</th>
+                            <th scope="col">類型</th>
+                            <th scope="col">車牌</th>
+                            <th scope="col">刪除</th>
+                        </tr>
+                        </thead>
+                        <tbody id="list">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../components/footer.ejs') %>
+<script>
+
+    axios.post('/admin/brand/',{
+        fetch:1
+    }).then((res)=>{
+        res.data.brands.forEach(item=>{
+            $('#brand').append($(`
+                <option value="${item.id}">${item.name}</option>
+            `))
+        })
+    })
+
+    axios.post('/admin/vehicle/',{
+        fetch:1
+    }).then((res)=>{
+        res.data.vehicles.forEach(item=>{
+
+            $('#list').append($(`
+                <tr>
+                    <th scope="row">${item.id}</th>
+                    <td onclick="check_calendar(${item.id})">${item.name}</td>
+                    <td onclick="check_calendar(${item.id})">${item.type}</td>
+                    <td onclick="check_calendar(${item.id})">${item.license_plate}</td>
+                    <td >
+                        <a href="#" onclick="delete_(${item.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                    x
+                        </a>
+                    </td>
+                </tr>
+            `))
+        })
+    })
+
+    function upload_(){
+
+
+        const fileInput = document.getElementById('photo');
+        const file = fileInput.files[0];
+        const formData = new FormData();
+
+        formData.append('file', file);
+        formData.append('name',$('#name').val());
+        formData.append('age',$('#age').val());
+        formData.append('type',$('#type').val());
+        formData.append('license_plate',$('#license_plate').val());
+        formData.append('introduction',$('#introduction').val());
+        formData.append('brand',$('#brand').val());
+        formData.append('price',$('#price').val());
+        formData.append('sub',$('#sub').val());
+        formData.append('fetch',0);
+
+        axios.post('/admin/vehicle/',formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res=>{
+            if(res.data.errno === 0){
+                swal({
+                    'title':'新增成功',
+                    'text':' ',
+                    'icon':'success',
+                    'button':'確認'
+                })
+                $("#list").append($(`
+                    <tr>
+                        <th scope="row">${res.data.vehicle.id}</th>
+                        <td>${res.data.vehicle.name}</td>
+                        <td>${res.data.vehicle.type}</td>
+                        <td>${res.data.vehicle.license_plate}</td>
+                        <td >
+                            <a href="#" onclick="delete_(${res.data.vehicle.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                        x
+                            </a>
+                        </td>
+                    </tr>
+                `))
+                $('#name').val('');
+                $('#age').val('');
+                $('#type').val('');
+                $('#license_plate').val('');
+                $('#introduction').val('');
+                $('#brand').val('');
+                $('#price').val('');
+                $('#sub').val('');
+            }
+        })
+    }
+
+
+    function delete_(id){
+        axios.patch('/admin/vehicle/',{
+            id:id
+        }).then((res)=>{
+
+            $('#list').empty()
+            res.data.vehicles.forEach(item=>{
+                swal({
+                    'title':'刪除成功',
+                    'text':' ',
+                    'icon':'success',
+                    'button':'確認'
+                })
+                $('#list').append($(`
+                <tr>
+                    <th scope="row">${item.id}</th>
+                    <td>${item.name}</td>
+                    <td>${item.type}</td>
+                    <td>${item.license_plate}</td>
+                    <td >
+                        <a href="#" onclick="delete_(${item.id})" style="color: #0d6efd;font-weight: 700;text-decoration: none">
+                                    x
+                        </a>
+                    </td>
+                </tr>
+            `))
+            })
+        })
+    }
+
+    function check_calendar(id){
+        window.location.href = `/admin/calendar/${id}`
+    }
+</script>

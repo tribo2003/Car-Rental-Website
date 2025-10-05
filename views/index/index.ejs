@@ -1,0 +1,381 @@
+<%- include('../components/header.ejs') %>
+<style>
+    .vehicle{
+        box-shadow: 0px 0px 5px #e3e3e3;border: 0;overflow: hidden;
+    }
+    .vehicle:hover{
+        box-shadow: 0px 0px 12px #cbcbcb;border: 0;
+    }
+    .picture:hover{
+        transform: scale(1.08); /* 放大图片 */
+        transition: transform 0.5s ease;
+    }
+    .picture{
+        height: 180px;
+        object-fit: cover;
+        width: 100%;
+
+    }
+    @media (max-width: 1199px) {
+        .picture{
+            height: 150px;
+        }
+    }
+    @media (max-width: 991px) {
+        .picture{
+            height: 180px;
+        }
+    }
+    @media (max-width: 576px) {
+        .picture{
+            height: 250px;
+        }
+    }
+    @media (max-width: 420px) {
+        .picture{
+            height: 180px;
+        }
+    }
+    .form-control{
+        border-radius: 0;
+    }
+    .form-select{
+        border-radius: 0;
+    }
+
+
+</style>
+<link rel="stylesheet" href="/css/index.css" >
+<div class="background-container">
+    <div class="overlay"></div>
+    <div class="content" >
+        <h1 class="title">文宏租車網站</h1>
+        <a class="breadborad_text" href="/"> 首頁 </a>
+    </div>
+</div>
+<div class="container ">
+    <div  class="accordion" >
+        <a onclick="daily()" id="daily" type="button" class="_btn btn_color"  >
+            日租車
+        </a>
+        <a  onclick="contract()" id="contract" type="button" class="_btn " >
+            訂約車
+        </a>
+
+    </div>
+    <div  id="content" class="card card_padding" >
+        <div style="margin: 10px" id="place">
+            <p>選擇取還車地點</p>
+            <select style="height: 42px" class="form-select" id="rental_place">
+                <option >選擇取還車地點</option>
+
+            </select>
+        </div>
+        <div>
+            <div class="row" style="padding: 13px">
+                <div style="padding: 10px" class="col-sm-6">
+                    <p>選擇取車時間</p>
+                    <div style="display: flex">
+                        <input style="height: 42px;margin-right: 5px" class="form-control"  type="date" id="rental_date" name="date">
+
+                        <select style="height: 42px;margin-left: 5px" id="rental_time" class="form-select" aria-label="Default select example">
+                            <option >選擇時間</option>
+                            <option value="T08:00:00+08:00">8:00</option>
+                            <option value="T08:30:00+08:00">8:30</option>
+                            <option value="T09:00:00+08:00">9:00</option>
+                            <option value="T09:30:00+08:00">9:30</option>
+                            <option value="T10:00:00+08:00">10:00</option>
+                            <option value="T10:30:00+08:00">10:30</option>
+                            <option value="T11:00:00+08:00">11:00</option>
+                            <option value="T11:30:00+08:00">11:30</option>
+                            <option value="T12:00:00+08:00">12:00</option>
+                            <option value="T12:30:00+08:00">12:30</option>
+                            <option value="T13:00:00+08:00">13:00</option>
+                            <option value="T13:30:00+08:00">13:30</option>
+                            <option value="T14:00:00+08:00">14:00</option>
+                            <option value="T14:30:00+08:00">14:30</option>
+                            <option value="T15:00:00+08:00">15:00</option>
+                            <option value="T15:30:00+08:00">15:30</option>
+                            <option value="T16:00:00+08:00">16:00</option>
+                            <option value="T16:30:00+08:00">16:30</option>
+                            <option value="T17:00:00+08:00">17:00</option>
+                            <option value="T17:30:00+08:00">17:30</option>
+                            <option value="T18:00:00+08:00">18:00</option>
+                            <option value="T18:30:00+08:00">18:30</option>
+                            <option value="T19:00:00+08:00">19:00</option>
+                            <option value="T19:30:00+08:00">19:30</option>
+                            <option value="T20:00:00+08:00">20:00</option>
+                            <option value="T20:30:00+08:00">20:30</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="padding: 10px" class="col-sm-6">
+                    <p>選擇還車時間</p>
+                    <div style="display: flex">
+                        <input style="height: 42px;margin-right: 5px" class="form-control" type="date" id="return_date" name="date">
+                        <select style="height: 42px;margin-left: 5px" id="return_time" class="form-select" aria-label="Default select example">
+                            <option >選擇時間</option>
+                            <option value="T08:00:00+08:00">8:00</option>
+                            <option value="T08:30:00+08:00">8:30</option>
+                            <option value="T09:00:00+08:00">9:00</option>
+                            <option value="T09:30:00+08:00">9:30</option>
+                            <option value="T10:00:00+08:00">10:00</option>
+                            <option value="T10:30:00+08:00">10:30</option>
+                            <option value="T11:00:00+08:00">11:00</option>
+                            <option value="T11:30:00+08:00">11:30</option>
+                            <option value="T12:00:00+08:00">12:00</option>
+                            <option value="T12:30:00+08:00">12:30</option>
+                            <option value="T13:00:00+08:00">13:00</option>
+                            <option value="T13:30:00+08:00">13:30</option>
+                            <option value="T14:00:00+08:00">14:00</option>
+                            <option value="T14:30:00+08:00">14:30</option>
+                            <option value="T15:00:00+08:00">15:00</option>
+                            <option value="T15:30:00+08:00">15:30</option>
+                            <option value="T16:00:00+08:00">16:00</option>
+                            <option value="T16:30:00+08:00">16:30</option>
+                            <option value="T17:00:00+08:00">17:00</option>
+                            <option value="T17:30:00+08:00">17:30</option>
+                            <option value="T18:00:00+08:00">18:00</option>
+                            <option value="T18:30:00+08:00">18:30</option>
+                            <option value="T19:00:00+08:00">19:00</option>
+                            <option value="T19:30:00+08:00">19:30</option>
+                            <option value="T20:00:00+08:00">20:00</option>
+                            <option value="T20:30:00+08:00">20:30</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div style="width: 100%;margin: 10px" class="form-check">
+                <input class="form-check-input" type="checkbox" value="" onclick="A_rents_B_returns()">
+                <label class="form-check-label" for="flexCheckDefault">
+                    甲租乙還
+                </label>
+            </div>
+        </div>
+        <div id="select" style="display: contents;">
+            <a  style="height: 42px;margin: 10px" onclick="select()"  class="btn btn-primary">選擇車型</a>
+
+        </div>
+        <div id="vehicle" class="row">
+
+        </div>
+        <div id="rent" style="display: contents">
+        </div>
+
+    </div>
+    <div style="margin-top: 50px">
+        <h4 style="color: #777777">用戶留言</h4>
+
+        <div style="   margin-top: 25px; display: flex;align-items: center;">
+            <input id="input_comment" style="margin: 0;border: 1px solid black;border-top: 0;border-right:0;border-left: 0 " placeholder="新增你的留言" class="form-control">
+            <button onclick="submit_comment()" style="border-radius: 25px;width: 120px ;color: #515151;background-color: #ececec;border-color: #ffffff;" class="btn btn-secondary">確認送出</button>
+        </div>
+
+        <div id="comment">
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+<%- include('../components/footer.ejs') %>
+<script src="/js/index.js"></script>
+<script>
+
+    axios.patch('comment').then(res=>{
+        res.data.comments.forEach(item=>{
+            $("#comment").append($(`
+                <div style="   margin-top: 25px; display: flex;align-items: center;">
+                    <img style="width: 50px;object-fit: cover;height: 50px;border-radius: 50%" src="/images/user.png">
+                    <div style="margin-left: 15px">
+                        <h6 style="color: #606060">${item.User.name}</h6>
+                        <p style="margin: 0;color: #777777">${item.text}</p>
+                    </div>
+                </div>
+            `))
+        })
+    })
+
+    function submit_comment(){
+        const comment_text = $("#input_comment").val()
+        axios.post('/comment',{
+            'input_comment':comment_text
+        }).then(res=>{
+            if(res.data.errno === 1){
+                swal({
+                    'title':'請先登入',
+                    'text':'請先登入在進行以下步驟',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':1500
+                })
+            }else if(res.data.errno === 2){
+                swal({
+                    'title':'系統出錯',
+                    'text':'請稍後再試',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':1500
+                })
+            }else{
+                swal({
+                    'title':'已成功新增',
+                    'text':'謝謝您的留言',
+                    'icon':'success',
+                    'buttons':false,
+                    'timer':1500
+                })
+                $("#comment").prepend($(`
+                    <div style="   margin-top: 25px; display: flex;align-items: center;">
+                        <img style="width: 50px;object-fit: cover;height: 50px;border-radius: 50%" src="/images/user.png">
+                        <div style="margin-left: 15px">
+                            <h6 style="color: #606060"><%= user.name %></h6>
+                            <p style="margin: 0;color: #777777">${comment_text}</p>
+                        </div>
+                    </div>
+                `))
+            }
+        })
+    }
+
+    let vehicle = null
+    function select_(id){
+        if(vehicle === null){
+            vehicle = id
+        }else{
+            $(`#${vehicle}`).prop("checked", false);
+            vehicle = id
+        }
+    }
+
+    // 將表單資料送到後端
+    function rent(){
+        if( vehicle === null || $('#rental_place').val() === '選擇取還車地點' || isEmpty($('#rental_date').val()) || isEmpty($('#rental_time').val()) || isEmpty($('#return_date').val()) || isEmpty($('#return_time').val()) ){
+            swal({
+                'title':'資料不完全',
+                'text':'請完整填寫所有資料',
+                'icon':'warning',
+                'buttons':false,
+                'timer':1500
+            })
+        }else{
+            const rental_date = std_time($('#rental_date').val(),$('#rental_time').val())
+            const return_date = std_time($('#return_date').val(),$('#return_time').val())
+            const now = new Date()
+            if(rental_date<now){
+                swal({
+                    'title':'資料錯誤',
+                    'text':'租借日期已經過期',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':2000
+                })
+            }else if(rental_date > return_date){
+                swal({
+                    'title':'資料錯誤',
+                    'text':'還車日期須在借車日期之後',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':2000
+                })
+            }else{
+
+                var date1 = new Date($('#rental_date').val()+$('#rental_time').val());
+                var date2 = new Date($('#return_date').val()+$('#return_time').val()); // 假設另一個日期是 2024-05-20
+                var timeDifference = date2 - date1;
+                var dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+                axios.post('/',{
+                    vehicle:vehicle
+                }).then(res=>{
+                    if(res.data.errno === 0){
+                        swal({
+                            'title':'已傳送',
+                            'text':'正在跳轉至訂單頁面',
+                            'icon':'success',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                        const data = {
+                            'rental_place':$('#rental_place').val(),
+                            'return_place':$('#return_place').val(),
+                            'rental_date':$('#rental_date').val()+$('#rental_time').val(),
+                            'return_date':$('#return_date').val()+$('#return_time').val(),
+                            'vehicle':vehicle,
+                            'dayDifference':Math.ceil(dayDifference),
+                            'classify':'day'
+                        }
+                        const queryString = new URLSearchParams(data).toString();
+                        window.location.href = `/order?${queryString}`;
+                    }else{
+                        console.log(res.data)
+                        swal({
+                            'title':'請先登入',
+                            'text':'登入後才能繼續以下動作',
+                            'icon':'warning',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                    }
+                })
+            }
+        }
+    }
+
+    function rent_sub(){
+        if( vehicle === null || $('#rental_place').val() === '選擇取還車地點' || isEmpty($('#rental_date').val()) || isEmpty($('#rental_time').val()) ){
+            swal({
+                'title':'資料不完全',
+                'text':'請完整填寫所有資料',
+                'icon':'warning',
+                'buttons':false,
+                'timer':1500
+            })
+        }else{
+            const rental_date = std_time($('#rental_date').val(),$('#rental_time').val())
+            const now = new Date()
+            if(rental_date<now){
+                swal({
+                    'title':'資料錯誤',
+                    'text':'租借日期已經過期',
+                    'icon':'warning',
+                    'buttons':false,
+                    'timer':2000
+                })
+            }else{
+                axios.post('/').then(res=>{
+                    if(res.data.errno === 0){
+                        swal({
+                            'title':'已傳送',
+                            'text':'正在跳轉至訂單頁面',
+                            'icon':'success',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                        const data = {
+                            'rental_place':$('#rental_place').val(),
+                            'rental_date':$('#rental_date').val()+$('#rental_time').val(),
+                            'vehicle':vehicle,
+                            'classify':'month'
+                        }
+                        const queryString = new URLSearchParams(data).toString();
+                        window.location.href = `/order?${queryString}`;
+                    }else{
+                        swal({
+                            'title':'請先登入',
+                            'text':'登入後才能繼續以下動作',
+                            'icon':'warning',
+                            'buttons':false,
+                            'timer':2000
+                        })
+                    }
+                })
+            }
+        }
+    }
+</script>

@@ -1,0 +1,136 @@
+<%- include('./header.ejs') %>
+<style>
+    .card_padding{
+        margin: 50px;
+        padding: 50px
+    }
+    .margin{
+        margin-bottom: 40px;
+    }
+    .btn_{
+        width: 100%;
+    }
+    @media (max-width: 991px) {
+        .card_padding{
+            margin: 0px;
+            margin-top: 50px;
+            padding: 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .btn_{
+            margin-top:10px;
+            margin-bottom:10px;
+            width: 100%;
+        }
+        .card_padding{
+            padding: 42px
+        }
+    }
+    @media (max-width: 480px) {
+        .card_padding{
+            padding: 32px
+        }
+    }
+</style>
+<main>
+    <div class="container">
+        <div class="card card_padding" >
+            <h5>訂單記錄</h5>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">name</th>
+                    <th scope="col">license</th>
+                    <th scope="col">payment</th>
+                    <th scope="col">isPay</th>
+                    <th scope="col">isReturn</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <% for(let order of orders){ %>
+                        <tr>
+                            <th onclick="direct('<%=order.id%>')"  scope="col"><%= order.User.name %></th>
+                            <th onclick="direct('<%=order.id%>')" scope="col"><%= order.Vehicle.license_plate %></th>
+                            <th onclick="direct('<%=order.id%>')" scope="col"><%= order.payment_method %></th>
+                            <% if ( order.isPay ){%>
+                                <th scope="col">
+                                    <div class="form-check">
+                                        <input onclick="notPay('<%=order.id%>')" class="form-check-input" type="checkbox" value=""  checked>
+                                        <label  class="form-check-label" for="flexCheckChecked">
+                                            Pay
+                                        </label>
+                                    </div>
+                                </th>
+                            <%}else{%>
+                                <th scope="col">
+                                    <div class="form-check">
+                                        <input onclick=isPay('<%=order.id%>') class="form-check-input" type="checkbox" value="" >
+                                        <label  class="form-check-label" >
+                                            Pay
+                                        </label>
+                                    </div>
+                                </th>
+                            <%}%>
+                            <% if ( order.isReturn ){%>
+                                <th scope="col">
+                                    <div class="form-check">
+                                        <input onclick="notReturn('<%=order.id%>')" class="form-check-input" type="checkbox" value=""  checked>
+                                        <label class="form-check-label" >
+                                            Return
+                                        </label>
+                                    </div>
+                                </th>
+                            <%}else{%>
+                                <th scope="col">
+                                    <div class="form-check">
+                                        <input onclick="isReturn('<%=order.id%>')" class="form-check-input" type="checkbox" value="" >
+                                        <label class="form-check-label" >
+                                            Return
+                                        </label>
+                                    </div>
+                                </th>
+                            <%}%>
+
+
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<%- include('../components/footer.ejs') %>
+<script>
+    function isReturn(id){
+        axios.post('/admin/',{
+            type:'isReturn',
+            id:Number(id)
+        })
+    }
+    function notReturn(id){
+        axios.post('/admin/',{
+            type:'notReturn',
+            id:Number(id)
+        })
+    }
+
+    function isPay(id){
+        axios.post('/admin/',{
+            type:'isPay',
+            id:Number(id)
+        })
+    }
+
+    function notPay(id){
+        axios.post('/admin/',{
+            type:'notPay',
+            id:Number(id)
+        })
+    }
+
+    function direct(id){
+        window.location.href=`/admin/single/${id}`
+    }
+
+</script>
